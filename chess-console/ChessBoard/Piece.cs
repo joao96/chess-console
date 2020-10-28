@@ -14,5 +14,10 @@
             Board = board;
             MoveCount = 0;
         }
+
+        public void AddMoveCount()
+        {
+            MoveCount++;
+        }
     }
 }

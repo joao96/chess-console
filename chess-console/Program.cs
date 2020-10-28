@@ -11,16 +11,22 @@ namespace ChessBoard
         {
             try
             {
-                Board board = new Board(8, 8);
+                ChessMatch match = new ChessMatch();
 
-                board.InsertPiece(new Rook(board, Color.Black), new Position(0, 0));
-                board.InsertPiece(new Rook(board, Color.Black), new Position(1, 3));
-                board.InsertPiece(new King(board, Color.Black), new Position(0, 2));
+                while(!match.Finished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
 
-                board.InsertPiece(new Rook(board, Color.White), new Position(3, 5));
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.ReadChessPosition().ToPosition();
+                    Console.Write("Destination: ");
+                    Position destination = Screen.ReadChessPosition().ToPosition();
+                    
+                    match.Move(origin, destination);
+                }
 
-
-                Screen.PrintBoard(board);
             }
             catch (BoardException e)
             {
