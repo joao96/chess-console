@@ -1,12 +1,14 @@
-﻿using ChessBoard;
+﻿using System.Reflection.PortableExecutable;
+using ChessBoard;
+using ChessBoard.Excepetions;
 
 namespace Chess
 {
     class ChessMatch
     {
         public Board Board { get; private set; }
-        private int Turn;
-        private Color CurrentPlayer;
+        public int Turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
 
         public ChessMatch()
@@ -24,6 +26,49 @@ namespace Chess
             p.AddMoveCount();
             Piece pieceCaptured = Board.RemovePiece(destination);
             Board.InsertPiece(p, destination);
+        }
+
+        public void PlayTurn(Position origin, Position destination)
+        {
+            Move(origin, destination);
+            Turn++;
+            ChangePlayer();
+        }
+
+        public void ValidateOriginPosition(Position pos)
+        {
+            if (Board.Piece(pos) == null)
+            {
+                throw new BoardException("No piece in given position.");
+            }
+            if (CurrentPlayer != Board.Piece(pos).Color)
+            {
+                throw new BoardException("Given piece is not yours.");
+            }
+            if (!Board.Piece(pos).HasPossibleMoves())
+            {
+                throw new BoardException("No possible moves for given piece.");
+            }
+        }
+
+        public void ValidateDestinationPosition(Position origin, Position destination)
+        {
+            if (!Board.Piece(origin).CanMoveTo(destination))
+            {
+                throw new BoardException("Destination is invalid.");
+            }
+        }
+
+        public void ChangePlayer()
+        {
+            if (CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
         }
 
         private void PlacePieces()

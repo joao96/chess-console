@@ -15,23 +15,40 @@ namespace ChessBoard
 
                 while(!match.Finished)
                 {
-                    Console.Clear();
-                    Screen.PrintBoard(match.Board);
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintBoard(match.Board);
 
-                    Console.WriteLine();
-                    Console.Write("Origin: ");
-                    Position origin = Screen.ReadChessPosition().ToPosition();
+                        Console.WriteLine();
+                        Console.WriteLine("Turn: " + match.Turn);
+                        Console.WriteLine("Waiting for: " + match.CurrentPlayer);
 
-                    bool[,] possiblePositions = match.Board.Piece(origin).PossibleMoves();
+
+                        Console.WriteLine();
+                        Console.Write("Origin: ");
+                        Position origin = Screen.ReadChessPosition().ToPosition();
+
+                        match.ValidateOriginPosition(origin);
+
+                        bool[,] possiblePositions = match.Board.Piece(origin).PossibleMoves();
                     
-                    Console.Clear();
-                    Screen.PrintBoard(match.Board, possiblePositions);
-                    Console.WriteLine();
+                        Console.Clear();
+                        Screen.PrintBoard(match.Board, possiblePositions);
+                        Console.WriteLine();
 
-                    Console.Write("Destination: ");
-                    Position destination = Screen.ReadChessPosition().ToPosition();
-                    
-                    match.Move(origin, destination);
+                        Console.Write("Destination: ");
+                        Position destination = Screen.ReadChessPosition().ToPosition();
+
+                        match.ValidateDestinationPosition(origin, destination);
+
+                        match.PlayTurn(origin, destination);
+                    }
+                    catch (BoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
 
             }
