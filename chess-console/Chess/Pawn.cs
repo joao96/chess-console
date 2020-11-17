@@ -41,7 +41,8 @@ namespace Chess
                 }
 
                 pos.DefineValues(Position.Line - 2, Position.Column);
-                if (Board.IsValidPosition(pos) && IsFree(pos) && MoveCount == 0)
+                Position pos2 = new Position(Position.Line - 1, Position.Column);
+                if (Board.IsValidPosition(pos2) && IsFree(pos2) && Board.IsValidPosition(pos) && IsFree(pos) && MoveCount == 0)
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
@@ -67,7 +68,10 @@ namespace Chess
                 }
 
                 pos.DefineValues(Position.Line + 2, Position.Column);
-                if (Board.IsValidPosition(pos) && IsFree(pos) && MoveCount == 0)
+                Position pos2 = new Position(Position.Line + 1, Position.Column);
+
+                if (Board.IsValidPosition(pos2) && IsFree(pos2) && Board.IsValidPosition(pos) && IsFree(pos) && MoveCount == 0)
+
                 {
                     mat[pos.Line, pos.Column] = true;
                 }

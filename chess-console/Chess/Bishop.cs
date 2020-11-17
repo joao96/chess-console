@@ -38,7 +38,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line - 1, Position.Column - 1);
+                pos.DefineValues(pos.Line - 1, pos.Column - 1);
 
             }
 
@@ -52,7 +52,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line - 1, Position.Column + 1);
+                pos.DefineValues(pos.Line - 1, pos.Column + 1);
 
             }
 
@@ -66,7 +66,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line + 1, Position.Column + 1);
+                pos.DefineValues(pos.Line + 1, pos.Column + 1);
 
             }
 
@@ -80,7 +80,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line + 1, Position.Column - 1);
+                pos.DefineValues(pos.Line + 1, pos.Column - 1);
 
             }
 

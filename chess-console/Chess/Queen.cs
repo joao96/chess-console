@@ -28,6 +28,8 @@ namespace Chess
 
             Position pos = new Position(0, 0);
 
+
+            // above
             pos.DefineValues(Position.Line - 1, Position.Column);
             while (Board.IsValidPosition(pos) && CanMove(pos))
             {
@@ -37,7 +39,8 @@ namespace Chess
                 {
                     break;
                 }
-                pos.Line = pos.Line - 1;
+                pos.DefineValues(pos.Line - 1, pos.Column);
+
 
             }
 
@@ -51,7 +54,8 @@ namespace Chess
                 {
                     break;
                 }
-                pos.Line = pos.Line + 1;
+                pos.DefineValues(pos.Line + 1, pos.Column);
+
 
             }
 
@@ -65,7 +69,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.Column = pos.Column + 1;
+                pos.DefineValues(pos.Line, pos.Column + 1);
 
             }
 
@@ -79,7 +83,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.Column = pos.Column - 1;
+                pos.DefineValues(pos.Line, pos.Column - 1);
 
             }
 
@@ -93,7 +97,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line - 1, Position.Column - 1);
+                pos.DefineValues(pos.Line - 1, pos.Column - 1);
 
             }
 
@@ -107,7 +111,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line - 1, Position.Column + 1);
+                pos.DefineValues(pos.Line - 1, pos.Column + 1);
 
             }
 
@@ -121,7 +125,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line + 1, Position.Column + 1);
+                pos.DefineValues(pos.Line + 1, pos.Column + 1);
 
             }
 
@@ -135,7 +139,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.DefineValues(Position.Line + 1, Position.Column - 1);
+                pos.DefineValues(pos.Line + 1, pos.Column - 1);
 
             }
 

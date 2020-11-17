@@ -36,7 +36,6 @@ namespace ChessBoard
                         Position destination = Screen.ReadChessPosition().ToPosition();
 
                         match.ValidateDestinationPosition(origin, destination);
-
                         match.PlayTurn(origin, destination);
                     }
                     catch (BoardException e)

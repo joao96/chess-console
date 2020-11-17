@@ -1,4 +1,6 @@
 ﻿using ChessBoard;
+using System;
+
 using System.Collections.Generic;
 using ChessBoard.Excepetions;
 
@@ -34,12 +36,33 @@ namespace Chess
         {
             Piece p = Board.RemovePiece(origin);
             p.AddMoveCount();
+
             Piece pieceCaptured = Board.RemovePiece(destination);
             Board.InsertPiece(p, destination);
 
             if (pieceCaptured != null)
             {
                 Captured.Add(pieceCaptured);
+            }
+
+            // #SpecialMove Castling short
+            if (p is King && destination.Column == origin.Column + 2)
+            {
+                Position RookOrigin = new Position(origin.Line, origin.Column + 3);
+                Position RookDestination = new Position(origin.Line, origin.Column + 1);
+                Piece R = Board.RemovePiece(RookOrigin);
+                R.AddMoveCount();
+                Board.InsertPiece(R, RookDestination);
+            }
+
+            // #SpecialMove Castling long
+            if (p is King && destination.Column == origin.Column - 2)
+            {
+                Position RookOrigin = new Position(origin.Line, origin.Column - 4);
+                Position RookDestination = new Position(origin.Line, origin.Column - 1);
+                Piece R = Board.RemovePiece(RookOrigin);
+                R.AddMoveCount();
+                Board.InsertPiece(R, RookDestination);
             }
 
             return pieceCaptured;
@@ -56,6 +79,26 @@ namespace Chess
             }
 
             Board.InsertPiece(p, origin);
+
+            // #SpecialMove Castling short
+            if (p is King && destination.Column == origin.Column + 2)
+            {
+                Position RookOrigin = new Position(origin.Line, origin.Column + 3);
+                Position RookDestination = new Position(origin.Line, origin.Column + 1);
+                Piece R = Board.RemovePiece(RookDestination);
+                R.SubtractMoveCount();
+                Board.InsertPiece(R, RookOrigin);
+            }
+
+            // #SpecialMove Castling long
+            if (p is King && destination.Column == origin.Column - 2)
+            {
+                Position RookOrigin = new Position(origin.Line, origin.Column - 4);
+                Position RookDestination = new Position(origin.Line, origin.Column - 1);
+                Piece R = Board.RemovePiece(RookDestination);
+                R.SubtractMoveCount();
+                Board.InsertPiece(R, RookOrigin);
+            }
         }
 
 
@@ -65,16 +108,21 @@ namespace Chess
 
             if (IsInCheck(CurrentPlayer))
             {
+
                 UndoMove(origin, destination, pieceCaptured);
                 throw new BoardException("You can't put yourself in check!");
 ;           }
 
             if (IsInCheck(Adversary(CurrentPlayer)))
             {
+                
+
                 Check = true;
             }
             else
             {
+                Console.WriteLine("hi");
+
                 Check = false;
             }
 
@@ -255,7 +303,7 @@ namespace Chess
             PlaceNewPiece('b', 1, new Knight(Board, Color.White));
             PlaceNewPiece('c', 1, new Bishop(Board, Color.White));
             PlaceNewPiece('d', 1, new Queen(Board, Color.White));
-            PlaceNewPiece('e', 1, new King(Board, Color.White));
+            PlaceNewPiece('e', 1, new King(Board, Color.White, this));
             PlaceNewPiece('f', 1, new Bishop(Board, Color.White));
             PlaceNewPiece('g', 1, new Knight(Board, Color.White));
             PlaceNewPiece('h', 1, new Rook(Board, Color.White));
@@ -272,7 +320,7 @@ namespace Chess
             PlaceNewPiece('b', 8, new Knight(Board, Color.Black));
             PlaceNewPiece('c', 8, new Bishop(Board, Color.Black));
             PlaceNewPiece('d', 8, new Queen(Board, Color.Black));
-            PlaceNewPiece('e', 8, new King(Board, Color.Black));
+            PlaceNewPiece('e', 8, new King(Board, Color.Black, this));
             PlaceNewPiece('f', 8, new Bishop(Board, Color.Black));
             PlaceNewPiece('g', 8, new Knight(Board, Color.Black));
             PlaceNewPiece('h', 8, new Rook(Board, Color.Black));
