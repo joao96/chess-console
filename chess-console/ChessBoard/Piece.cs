@@ -20,6 +20,11 @@
             MoveCount++;
         }
 
+        public void SubtractMoveCount()
+        {
+            MoveCount--;
+        }
+
         public bool HasPossibleMoves()
         {
             bool[,] mat = PossibleMoves();
