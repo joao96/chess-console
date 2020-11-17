@@ -78,9 +78,17 @@ namespace Chess
                 Check = false;
             }
 
+            if (IsInCheckmate(Adversary(CurrentPlayer)))
+            {
+                Finished = true;
+            }
+            else
+            {
+                Turn++;
+                ChangePlayer();
+            }
 
-            Turn++;
-            ChangePlayer();
+
         }
 
         public void ValidateOriginPosition(Position pos)
@@ -197,6 +205,44 @@ namespace Chess
             return false;
         }
 
+        public bool IsInCheckmate(Color color)
+        {
+            if (!IsInCheck(color))
+            {
+                return false;
+            }
+
+            foreach(Piece x in InGamePieces(color))
+            {
+                bool[,] mat = x.PossibleMoves();
+                /* plays ALL possible moves of all the pieces, 
+                 * accordingly to the given color,
+                 * and tests to see
+                 * if any move removes the check
+                 */
+                for (int i = 0; i < Board.Lines; i++)
+                {
+                    for (int j = 0; j < Board.Columns; j++)
+                    {
+                        if (mat[i,j])
+                        {
+                            Position origin = x.Position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = Move(origin, destination);
+                            bool testCheck = IsInCheck(color);
+                            UndoMove(origin, destination, capturedPiece);
+
+                            if (!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public void PlaceNewPiece(char column, int line, Piece piece)
         {
             Board.InsertPiece(piece, new ChessPosition(column, line).ToPosition());
@@ -205,7 +251,7 @@ namespace Chess
 
         private void PlacePieces()
         {
-            PlaceNewPiece('c', 1, new Rook(Board, Color.White));
+            /*PlaceNewPiece('c', 1, new Rook(Board, Color.White));
             PlaceNewPiece('c', 2, new Rook(Board, Color.White));
             PlaceNewPiece('d', 2, new Rook(Board, Color.White));
             PlaceNewPiece('e', 2, new Rook(Board, Color.White));
@@ -217,7 +263,16 @@ namespace Chess
             PlaceNewPiece('d', 7, new Rook(Board, Color.Black));
             PlaceNewPiece('e', 7, new Rook(Board, Color.Black));
             PlaceNewPiece('e', 8, new Rook(Board, Color.Black));
-            PlaceNewPiece('d', 8, new King(Board, Color.Black));
+            PlaceNewPiece('d', 8, new King(Board, Color.Black));*/
+
+            PlaceNewPiece('c', 1, new Rook(Board, Color.White));
+            PlaceNewPiece('d', 1, new King(Board, Color.White));
+            PlaceNewPiece('h', 7, new Rook(Board, Color.White));
+            
+            PlaceNewPiece('a', 8, new King(Board, Color.Black));
+            PlaceNewPiece('b', 8, new Rook(Board, Color.Black));
+
+
         }
     }
 }
